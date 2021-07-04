@@ -59,7 +59,7 @@ class App extends React.Component {
         <h4>City Name :{this.state.cityInfo.display_name}</h4>
         <h5> latitude :{this.state.cityInfo.lat} /longitude :{this.state.cityInfo.lon}</h5>
         {this.state.showMap &&
-        <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_LOCATION_KEY}&center=${this.state.cityInfo.lat},${this.state.cityInfo.lon}&zoom=20&size=400x400&format=jpg&maptype=roadmap`} alt='map' />}
+        <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_LOCATION_KEY}&center=${this.state.cityInfo.lat},${this.state.cityInfo.lon}&zoom=18&size=400x400&format=jpg&maptype=roadmap`} alt='map' />}
       </div>
     )
   }
