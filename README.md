@@ -76,13 +76,16 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 **Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
-<!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
+it is to learn how to git information from the server throw sending request and git result
 
 ## Getting Started
-<!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
+first register to location API server 
+2. get your key 
+3.test your url using browser or thunder clint 
+4.install react,axios and bootstrap
 
 ## Architecture
-<!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
+use JAX ,react ,bootstrap,axios,vs,github.netlify,troll
 
 ## Change Log
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
@@ -90,7 +93,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource. -->
 
 ## Credit and Collaborations
-<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
+my TA and teacher
 
 ===================================================================================================================
 
@@ -105,11 +108,11 @@ Actual time needed to complete: 1 hour and 17 min
 
 ===================================================================================================================
 
-Name of feature: Locations: As a user of City Explorer
+Name of feature: Locations: As a user of City Explorer and the rest
 
 Estimate of time needed to complete: 3 hours
 
 Start time: 4:00 pm
-Finish time: 3:47 pm
+Finish time: 6:14 pm
 
-Actual time needed to complete: 1 hour and 17 min
+Actual time needed to complete: 2 hours and 17 min
