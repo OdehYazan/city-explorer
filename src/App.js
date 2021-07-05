@@ -1,6 +1,7 @@
 import React from 'react'
 import { Form, Button } from 'react-bootstrap'
 import Axios from 'axios'
+import Weather from './components/Weather.js'
 
 
 class App extends React.Component {
@@ -44,7 +45,7 @@ class App extends React.Component {
 
     await this.setState({
 
-      weatherInfo: weatherArray.data[0],
+      weatherInfo: weatherArray.data,
       cityInfo: dataArray.data[0],
       showMap: true
     })
@@ -82,6 +83,16 @@ class App extends React.Component {
             <h5> latitude :{this.state.cityInfo.lat} /longitude :{this.state.cityInfo.lon}</h5>
 
             <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_LOCATION_KEY}&center=${this.state.cityInfo.lat},${this.state.cityInfo.lon}&zoom=18&size=800x800&format=jpg&maptype=roadmap`} alt='map' />
+
+            {
+                this.state.weatherInfo.map((item, index) => {
+                    return (
+
+                        <Weather date={item.date} description= {item.description} />
+
+                    )
+                })
+            }
 
           </div>}
       </div>
