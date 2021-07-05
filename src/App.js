@@ -9,7 +9,9 @@ class App extends React.Component {
     this.state = {
       cityInfo: {},
       userInputForCityName: '',
-      showMap: false
+      showMap: false,
+      weatherInfo: []
+
     }
 
   }
@@ -31,36 +33,59 @@ class App extends React.Component {
 
     let dataArray = await Axios.get(url);
 
-    console.log(dataArray)
-    console.log(dataArray.data[0])
-
-    this.setState({
 
 
+
+
+
+    let weatherUrl = `http://localhost:3001/weather?lat=${this.state.cityInfo.lat}&lon=${this.state.cityInfo.lon}&searchQuery=${this.state.userInputForCityName}`
+
+    let weatherArray = await Axios.get(weatherUrl);
+
+    await this.setState({
+
+      weatherInfo: weatherArray.data[0],
       cityInfo: dataArray.data[0],
       showMap: true
     })
+    // getWeather = async (event) => {
 
+    // }
+
+
+
+
+
+
+    // console.log(dataArray)
+    // console.log(dataArray.data[0])
+    console.log(weatherArray.data)
   }
 
 
   render() {
     return (
       <div>
-        <h1>City Explorer</h1>
-        <Form onSubmit={this.getLocation}>
-          <label > City Name :  </label>
-          <Form.Control size="lg" type="text" placeholder="Enter City name" name='City' />
-          <Button variant="primary" type="submit">Explore!</Button>
+        <div>
+          <h1>City Explorer</h1>
+          <Form onSubmit={this.getLocation}>
+            <label > City Name :  </label>
+            <Form.Control size="lg" type="text" placeholder="Enter City name" name='City' />
+            <Button variant="primary" type="submit">Explore!</Button>
+          </Form>
+        </div>
 
-        </Form>
-
-        <h3>City Information</h3>
-        <h4>City Name :{this.state.cityInfo.display_name}</h4>
-        <h5> latitude :{this.state.cityInfo.lat} /longitude :{this.state.cityInfo.lon}</h5>
         {this.state.showMap &&
-        <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_LOCATION_KEY}&center=${this.state.cityInfo.lat},${this.state.cityInfo.lon}&zoom=18&size=800x800&format=jpg&maptype=roadmap`} alt='map' />}
+          <div>
+            <h3>City Information</h3>
+            <h4>City Name :{this.state.cityInfo.display_name}</h4>
+            <h5> latitude :{this.state.cityInfo.lat} /longitude :{this.state.cityInfo.lon}</h5>
+
+            <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_LOCATION_KEY}&center=${this.state.cityInfo.lat},${this.state.cityInfo.lon}&zoom=18&size=800x800&format=jpg&maptype=roadmap`} alt='map' />
+
+          </div>}
       </div>
+
     )
   }
 }
