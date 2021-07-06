@@ -24,43 +24,32 @@ class App extends React.Component {
 
     await this.setState({
 
-      userInputForCityName: event.target.City.value
+      // Capitalizes the first latter in the city string user entered
+      userInputForCityName: event.target.City.value.charAt(0).toUpperCase() + event.target.City.value.slice(1)
 
     })
 
-    console.log(this.state.userInputForCityName);
+    // console.log(this.state.userInputForCityName);
 
     let url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_API_LOCATION_KEY}&q=${this.state.userInputForCityName}&format=json`
 
-    let dataArray = await Axios.get(url);
+    let dataArray = await Axios.get(url); // data from locationIQ request
 
 
-
-
-
-
-    let weatherUrl = `http://localhost:3001/weather?lat=${this.state.cityInfo.lat}&lon=${this.state.cityInfo.lon}&searchQuery=${this.state.userInputForCityName}`
+    let weatherUrl = `${process.env.REACT_APP_SERVER_URL}/weather?lat=${this.state.cityInfo.lat}&lon=${this.state.cityInfo.lon}&searchQuery=${this.state.userInputForCityName}`
 
     let weatherArray = await Axios.get(weatherUrl);
 
-    await this.setState({
+     this.setState({
 
       weatherInfo: weatherArray.data,
       cityInfo: dataArray.data[0],
       showMap: true
     })
-    // getWeather = async (event) => {
-
-    // }
-
-
-
-
-
 
     // console.log(dataArray)
     // console.log(dataArray.data[0])
-    console.log(weatherArray.data)
+    //console.log(weatherArray.data)
   }
 
 
@@ -84,17 +73,12 @@ class App extends React.Component {
 
             <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_LOCATION_KEY}&center=${this.state.cityInfo.lat},${this.state.cityInfo.lon}&zoom=18&size=800x800&format=jpg&maptype=roadmap`} alt='map' />
 
-            {
-                this.state.weatherInfo.map((item, index) => {
-                    return (
+           
+            <Weather weather={this.state.weatherInfo} /> 
+           
 
-                        <Weather date={item.date} description= {item.description} />
-
-                    )
-                })
-            }
-
-          </div>}
+          </div>
+          }
       </div>
 
     )
