@@ -36,7 +36,7 @@ class App extends React.Component {
     let dataArray = await Axios.get(url); // data from locationIQ request
 
 
-    let weatherUrl = `${process.env.REACT_APP_SERVER_URL}/weather?lat=${this.state.cityInfo.lat}&lon=${this.state.cityInfo.lon}&searchQuery=${this.state.userInputForCityName}`
+    let weatherUrl = `${process.env.REACT_APP_SERVER_URL}/weather?&searchQuery=${this.state.userInputForCityName}`
 
     let weatherArray = await Axios.get(weatherUrl);
 
