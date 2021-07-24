@@ -1,30 +1,29 @@
-import React from 'react'
-
-
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Weather extends React.Component {
-  constructor(props) {
-    super(props);
+    render() {
+        return (
+            <div >
+                {this.props.show &&  
+                <h5>Weather</h5>
+            }
+                {this.props.newWeatherArray.map((item, index) => {
+                    return (
+                        <div key={index}>  
+                            <p>  Date: {item.valid_date}</p>
+                            <p> Description: {item.description}</p>
+                            <p>======================</p>
+                        </div>
 
-  };
-  render() {
-    return (
-      <div>
-        {
-          this.props.weather.map((item, index) => {
-            return (
-              <div key={index}>
-                <p>Date: {item.date} </p>
-                <p>Weather: {item.description}</p  >
-              </div>
-            )
-          })
-        }
+                    )
+                }
+                )}
+            </div>
 
-      </div>
-    )
-  }
+        )
+
+    }
 }
-
 
 export default Weather;
