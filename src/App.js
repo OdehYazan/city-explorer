@@ -1,87 +1,117 @@
-import React from 'react'
-import { Form, Button } from 'react-bootstrap'
-import Axios from 'axios'
-import Weather from './components/Weather.js'
+import React from 'react';
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Form, Button } from 'react-bootstrap';
+import Weather from './components/Weather';
+import Movies from './components/Movies';
 
 
 class App extends React.Component {
   constructor(props) {
+
     super(props);
     this.state = {
-      cityInfo: {},
-      userInputForCityName: '',
+      cityData: {},
+      userInput: '',
       showMap: false,
-      weatherInfo: []
+      newWeatherArray: [],
+      newMoviesArray: [],
 
     }
-
   }
-
-
-  getLocation = async (event) => {
+  getLocationFun = async (event) => {
 
     event.preventDefault();
 
     await this.setState({
 
-      // Capitalizes the first latter in the city string user entered
-      userInputForCityName: event.target.City.value.charAt(0).toUpperCase() + event.target.City.value.slice(1)
-
+      userInput: event.target.cityName.value,
     })
 
-    // console.log(this.state.userInputForCityName);
+    console.log(this.state.userInput)
 
-    let url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_API_LOCATION_KEY}&q=${this.state.userInputForCityName}&format=json`
+    let url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_API_LOCATION_KEY}&q=${this.state.userInput}&format=json`;
 
-    let dataArray = await Axios.get(url); // data from locationIQ request
+    let resData = await axios.get(url);
 
+    await this.setState({
 
-    let weatherUrl = `${process.env.REACT_APP_SERVER_URL}/weather?&searchQuery=${this.state.userInputForCityName}`
-
-    let weatherArray = await Axios.get(weatherUrl);
-
-     this.setState({
-
-      weatherInfo: weatherArray.data,
-      cityInfo: dataArray.data[0],
-      showMap: true
+      cityData: resData.data[0],
+      showMap: true,
     })
+    this.getWeather();
+    this.weatherReq();
+    this.moviesReq();
 
-    // console.log(dataArray)
-    // console.log(dataArray.data[0])
-    //console.log(weatherArray.data)
+  }
+  weatherReq = async () => {
+
+    let cityName = this.state.userInput;
+    let weatherUrl = `${process.env.REACT_APP_SERVER_URL}/weather?cityName=${cityName}`;
+    // let weatherUrl = `http://localhost:3001/weather?cityName=${cityName}&format=json`;
+
+    let weatherData = await axios.get(weatherUrl)
+
+    await this.setState({ newWeatherArray: weatherData.data, });
   }
 
+  moviesReq = async () => {
+
+    let cityName = this.state.userInput;
+
+    let moviesUrl = `${process.env.REACT_APP_SERVER_URL}/movies?cityName=${cityName}`;
+
+    // let moviesUrl = `http://localhost:3001/movies?cityName=${cityName}&format=json`;
+    let moviesData = await axios.get(moviesUrl);
+
+    await this.setState({ newMoviesArray: moviesData.data, })
+    console.log(this.state.newMoviesArray);
+  }
+  getWeather = async () => {
+
+    let cityName = this.state.userInput
+
+    let cityData = await axios.get(`${process.env.REACT_APP_SERVER_URL}/weather?cityName=${cityName}`)
+
+    // let cityData = await axios.get(`http://localhost:3001/weather?cityName=${cityName}&format=json`)
+    
+    await this.setState({ newWeatherArray: cityData.data, })
+  }
 
   render() {
     return (
-      <div>
-        <div>
-          <h1>City Explorer</h1>
-          <Form onSubmit={this.getLocation}>
-            <label > City Name :  </label>
-            <Form.Control size="lg" type="text" placeholder="Enter City name" name='City' />
-            <Button variant="primary" type="submit">Explore!</Button>
-          </Form>
-        </div>
 
-        {this.state.showMap &&
-          <div>
-            <h3>City Information</h3>
-            <h4>City Name :{this.state.cityInfo.display_name}</h4>
-            <h5> latitude :{this.state.cityInfo.lat} /longitude :{this.state.cityInfo.lon}</h5>
+      <>
+        <h1>City Explorer </h1>
 
-            <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_LOCATION_KEY}&center=${this.state.cityInfo.lat},${this.state.cityInfo.lon}&zoom=18&size=800x800&format=jpg&maptype=roadmap`} alt='map' />
 
-           
-            <Weather weather={this.state.weatherInfo} /> 
-           
+        <Form onSubmit={this.getLocationFun}>
 
-          </div>
-          }
-      </div>
+          <Form.Group className="mb-3" controlId="formBasic">
+          <Form.Control type="text" placeholder="City Name" name='cityName'/>
+          </Form.Group>
 
+          <Button variant="primary" type="submit">
+            Search
+          </Button>
+        </Form>
+
+        
+        {this.state.showMap && <div>
+          <p>City Name:{this.state.cityData.display_name}</p>
+          <p>Latitude :{this.state.cityData.lat}</p>
+          <p>Longitude :{this.state.cityData.lon}</p>
+        </div>}
+        {this.state.showMap && <img alt='map' src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_API_LOCATION_KEY
+          }&center=${this.state.cityData.lat},${this.state.cityData.lon}&zoom=15`} />
+        }
+        <Weather newWeatherArray={this.state.newWeatherArray} show={this.state.showMap} />
+        <Movies newMoviesArray={this.state.newMoviesArray} />
+
+
+      </>
     )
   }
 }
+
 export default App;
